@@ -1171,23 +1171,25 @@
                                     )
                                 }
 
+                                // 创建轨道线（使用 BasicMaterial，不受光照影响）
                                 const orbitGeometry = new THREE.RingGeometry(
                                     data.distance - 0.1,
                                     data.distance + 0.1,
                                     64
                                 )
+                                // 使用 MeshBasicMaterial 创建轨道材质，不受光照影响，始终显示
                                 const orbitMaterial =
                                     new THREE.MeshBasicMaterial({
-                                        color: 0x404040,
-                                        transparent: true,
-                                        opacity: 0.2,
-                                        side: THREE.DoubleSide,
+                                        color: 0xcbd5e1, // Slate 300
+                                        transparent: true, // 启用透明度
+                                        opacity: 0.2, // 20% 不透明度
+                                        side: THREE.DoubleSide, // 双面渲染
                                     })
                                 const orbit = new THREE.Mesh(
                                     orbitGeometry,
                                     orbitMaterial
                                 )
-                                orbit.rotation.x = -Math.PI / 2
+                                orbit.rotation.x = -Math.PI / 2 // 旋转到水平面
                                 this.scene.add(orbit)
 
                                 planetGroup.add(planet)
