@@ -30,7 +30,14 @@
                 'https://gw.alipayobjects.com/os/lib/three/0.176.0/build/three.module.min.js'
             )
                 .then((THREE) => {
+                    /**
+                     * 太阳系模拟器主类
+                     * 负责创建和管理整个太阳系3D场景，包括行星、太阳、光照、交互等
+                     */
                     class SolarSystem {
+                        /**
+                         * 构造函数：初始化太阳系模拟器的所有属性和变量
+                         */
                         constructor() {
                             this.scene = null
                             this.camera = null
@@ -144,6 +151,10 @@
                             this.init()
                         }
 
+                        /**
+                         * 初始化方法：按顺序创建场景的各个部分
+                         * 包括画布设置、场景创建、光源、太阳、行星和事件监听
+                         */
                         init() {
                             this.setupCanvas()
                             this.createScene()
@@ -154,6 +165,9 @@
                             this.animate()
                         }
 
+                        /**
+                         * 设置画布尺寸，使其与窗口大小匹配
+                         */
                         setupCanvas() {
                             const canvas = document.getElementById('canvas')
                             const container =
@@ -165,6 +179,10 @@
                             canvas.height = screenHeight
                         }
 
+                        /**
+                         * 创建Three.js场景、相机和渲染器
+                         * 配置渲染器的阴影、色调映射、颜色空间等高级特性
+                         */
                         createScene() {
                             this.scene = new THREE.Scene()
 
@@ -204,6 +222,10 @@
                             this.scene.background = new THREE.Color(0x000814)
                         }
 
+                        /**
+                         * 创建天空盒（背景球体）
+                         * 创建一个巨大的球体作为场景背景，并添加星空效果
+                         */
                         createSkybox() {
                             const skyboxGeometry = new THREE.SphereGeometry(
                                 500,
@@ -224,6 +246,10 @@
                             this.createStars()
                         }
 
+                        /**
+                         * 创建星空粒子系统
+                         * 随机生成10000个星星点，分布在场景中，每个星星有随机亮度和位置
+                         */
                         createStars() {
                             const starsGeometry = new THREE.BufferGeometry()
                             const starsVertices = []
@@ -267,6 +293,11 @@
                             this.scene.add(stars)
                         }
 
+                        /**
+                         * 根据行星类型创建对应的纹理
+                         * @param {string} textureType - 行星类型（mercury, venus, earth等）
+                         * @returns {THREE.CanvasTexture} 创建好的纹理对象
+                         */
                         createPlanetTexture(textureType) {
                             const canvas = document.createElement('canvas')
                             canvas.width = 512
@@ -307,6 +338,11 @@
                             return texture
                         }
 
+                        /**
+                         * 创建水星纹理
+                         * 水星表面呈灰色，有大量陨石坑和亮点
+                         * @param {CanvasRenderingContext2D} ctx - Canvas 2D上下文
+                         */
                         createMercuryTexture(ctx) {
                             const gradient = ctx.createLinearGradient(
                                 0,
@@ -347,6 +383,11 @@
                             }
                         }
 
+                        /**
+                         * 创建金星纹理
+                         * 金星表面呈橙黄色，有云层和大气层效果
+                         * @param {CanvasRenderingContext2D} ctx - Canvas 2D上下文
+                         */
                         createVenusTexture(ctx) {
                             const gradient = ctx.createRadialGradient(
                                 256,
@@ -411,6 +452,11 @@
                             ctx.fillRect(0, 0, 512, 256)
                         }
 
+                        /**
+                         * 创建地球纹理
+                         * 包含海洋、大陆、云层等元素，模拟真实地球外观
+                         * @param {CanvasRenderingContext2D} ctx - Canvas 2D上下文
+                         */
                         createEarthTexture(ctx) {
                             const oceanGradient = ctx.createLinearGradient(
                                 0,
@@ -507,6 +553,11 @@
                             ctx.fillRect(0, 0, 512, 256)
                         }
 
+                        /**
+                         * 创建火星纹理
+                         * 火星表面呈红色，有陨石坑、极地冰帽等特征
+                         * @param {CanvasRenderingContext2D} ctx - Canvas 2D上下文
+                         */
                         createMarsTexture(ctx) {
                             const gradient = ctx.createRadialGradient(
                                 256,
@@ -605,6 +656,11 @@
                             ctx.fillRect(200, 196, 112, 60)
                         }
 
+                        /**
+                         * 创建木星纹理
+                         * 木星表面有横向条纹和大红斑（风暴），呈黄棕色
+                         * @param {CanvasRenderingContext2D} ctx - Canvas 2D上下文
+                         */
                         createJupiterTexture(ctx) {
                             const gradient = ctx.createLinearGradient(
                                 0,
@@ -666,6 +722,11 @@
                             }
                         }
 
+                        /**
+                         * 创建土星纹理
+                         * 土星表面呈淡黄色，有横向条纹和云层
+                         * @param {CanvasRenderingContext2D} ctx - Canvas 2D上下文
+                         */
                         createSaturnTexture(ctx) {
                             const gradient = ctx.createLinearGradient(
                                 0,
@@ -718,6 +779,11 @@
                             }
                         }
 
+                        /**
+                         * 创建天王星纹理
+                         * 天王星表面呈青蓝色，有横向条纹和云层
+                         * @param {CanvasRenderingContext2D} ctx - Canvas 2D上下文
+                         */
                         createUranusTexture(ctx) {
                             const gradient = ctx.createRadialGradient(
                                 256,
@@ -770,6 +836,11 @@
                             }
                         }
 
+                        /**
+                         * 创建海王星纹理
+                         * 海王星表面呈深蓝色，有横向条纹和风暴特征
+                         * @param {CanvasRenderingContext2D} ctx - Canvas 2D上下文
+                         */
                         createNeptuneTexture(ctx) {
                             const gradient = ctx.createRadialGradient(
                                 256,
@@ -858,11 +929,20 @@
                             ctx.fill()
                         }
 
+                        /**
+                         * 创建默认纹理（灰色）
+                         * 当行星类型不匹配时使用
+                         * @param {CanvasRenderingContext2D} ctx - Canvas 2D上下文
+                         */
                         createDefaultTexture(ctx) {
                             ctx.fillStyle = '#808080'
                             ctx.fillRect(0, 0, 512, 256)
                         }
 
+                        /**
+                         * 创建场景中的所有光源
+                         * 使用多种光源组合（点光源、环境光、方向光等）以营造真实的太空光照效果
+                         */
                         createLights() {
                             const sunLight = new THREE.PointLight(
                                 0xffffff,
@@ -933,6 +1013,10 @@
                             this.scene.add(rimLight)
                         }
 
+                        /**
+                         * 创建太阳及其光晕效果
+                         * 太阳由主体和三层光晕组成，营造发光效果，光晕会在动画中产生呼吸效果
+                         */
                         createSun() {
                             const sunGeometry = new THREE.SphereGeometry(
                                 3,
@@ -998,6 +1082,11 @@
                             this.sunGlows = [sunGlow1, sunGlow2, sunGlow3]
                         }
 
+                        /**
+                         * 创建所有行星
+                         * 为每个行星创建几何体、材质、轨道，并添加到场景中
+                         * 根据行星类型设置不同的材质属性（粗糙度、金属度等）
+                         */
                         createPlanets() {
                             this.planetData.forEach((data, index) => {
                                 const planetGroup = new THREE.Group()
@@ -1113,6 +1202,12 @@
                             })
                         }
 
+                        /**
+                         * 创建土星光环
+                         * 土星有三层光环，由内到外逐渐变淡，模拟真实的光环效果
+                         * @param {THREE.Group} planetGroup - 行星组对象
+                         * @param {number} planetRadius - 行星半径
+                         */
                         createSaturnRings(planetGroup, planetRadius) {
                             const ringGeometry = new THREE.RingGeometry(
                                 planetRadius * 1.5,
@@ -1185,6 +1280,10 @@
                             planetGroup.add(rings3)
                         }
 
+                        /**
+                         * 设置所有事件监听器
+                         * 包括鼠标事件（拖拽、点击、滚轮）、触摸事件（单指旋转、双指缩放）、UI控件事件等
+                         */
                         setupEventListeners() {
                             const canvas = document.getElementById('canvas')
 
@@ -1374,6 +1473,11 @@
                             })
                         }
 
+                        /**
+                         * 检测鼠标点击是否命中行星
+                         * 使用射线投射（Raycasting）技术检测点击，如果命中行星则显示信息面板
+                         * @param {MouseEvent} event - 鼠标点击事件
+                         */
                         checkPlanetClick(event) {
                             const raycaster = new THREE.Raycaster()
                             const mouse = new THREE.Vector2()
@@ -1395,6 +1499,11 @@
                             }
                         }
 
+                        /**
+                         * 显示行星信息面板
+                         * 在屏幕中央显示行星的详细信息（名称、直径、距离、公转周期）
+                         * @param {Object} planetData - 行星数据对象
+                         */
                         showPlanetInfo(planetData) {
                             const infoPanel =
                                 document.getElementById('planetInfo')
@@ -1416,6 +1525,11 @@
                             infoPanel.style.transform = 'translate(-50%, -50%)'
                         }
 
+                        /**
+                         * 动画循环函数
+                         * 每帧更新行星位置（公转）、行星旋转（自转）、太阳光晕动画、相机位置等
+                         * 使用requestAnimationFrame实现流畅的动画效果
+                         */
                         animate() {
                             this.animationId = requestAnimationFrame(() =>
                                 this.animate()
